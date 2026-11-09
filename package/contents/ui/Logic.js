@@ -158,10 +158,11 @@ function validContainerName(n) { return /^[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(n ||
 function validProjectName(n) { return /^[a-z0-9][a-z0-9_-]*$/.test(n || "") }
 
 // ---- CPU / RAM do host -----------------------------------------------------
-// saída de: head -n1 /proc/stat; grep -E '^(MemTotal|MemAvailable):' /proc/meminfo
-// -> { cpu: { busy, total } (contadores acumulados), memTotal, memUsed } em bytes
+// saída de: head -n1 /proc/stat; grep MemTotal/MemAvailable de /proc/meminfo;
+//           "temp <miligraus>" (hwmon da CPU, opcional); "net <rx> <tx>" (bytes acumulados)
+// -> { cpu: { busy, total } (contadores acumulados), memTotal, memUsed (bytes), temp (°C), net }
 function parseHost(text) {
-    const r = { cpu: null, memTotal: 0, memUsed: 0 }
+    const r = { cpu: null, memTotal: 0, memUsed: 0, temp: 0, net: null }
     let avail = 0
     for (const line of (text || "").split("\n")) {
         const f = line.trim().split(/\s+/)
@@ -172,6 +173,8 @@ function parseHost(text) {
             r.cpu = { busy: total - idle, total: total }
         } else if (f[0] === "MemTotal:") r.memTotal = (parseInt(f[1]) || 0) * 1024
         else if (f[0] === "MemAvailable:") avail = (parseInt(f[1]) || 0) * 1024
+        else if (f[0] === "temp") r.temp = (parseInt(f[1]) || 0) / 1000          // miligraus do hwmon
+        else if (f[0] === "net") r.net = { rx: parseFloat(f[1]) || 0, tx: parseFloat(f[2]) || 0 }
     }
     r.memUsed = Math.max(0, r.memTotal - avail)
     return r
@@ -183,4 +186,112 @@ function cpuPercent(prev, cur) {
     const dt = cur.total - prev.total
     if (dt <= 0) return 0
     return Math.min(100, Math.max(0, (cur.busy - prev.busy) / dt * 100))
+}
+
+// ---- coluna de sinais vitais ------------------------------------------------
+// Humor da mascote de uma métrica (0..100): parada dorme, normal flutua,
+// carregada pula e saturada entra em alarme. available=false (sem GPU) dorme.
+function vitalMood(value, warn, alarm, available) {
+    if (available === false || value < 3) return "sleep"
+    if (value >= alarm) return "alarm"
+    if (value >= warn) return "busy"
+    return "idle"
+}
+
+// Saída do comando de GPU: "uso, vram usada MiB, vram total MiB, temperatura °C, fabricante".
+// temp = 0 quando o sensor não existe.
+function parseGpu(text) {
+    const p = (text || "").split("\n")[0].split(",").map(x => x.trim())
+    return {
+        util: parseFloat(p[0]) || 0,
+        used: parseFloat(p[1]) || 0,
+        total: parseFloat(p[2]) || 0,
+        temp: parseFloat(p[3]) || 0,
+        vendor: p[4] === "amd" || p[4] === "nvidia" ? p[4] : ""
+    }
+}
+
+// Mascote do cartão de GPU: "auto" segue o fabricante detectado.
+function gpuMascot(choice, vendor) {
+    if (choice && choice !== "auto") return choice
+    return vendor === "amd" ? "amd" : "nvidia"
+}
+
+// Acrescenta uma amostra a uma série numérica com tamanho máximo.
+function pushSample(series, value, max) {
+    return (series || []).concat([value]).slice(-max)
+}
+
+// Humor pela temperatura: quente pula, crítica entra em alarme. temp 0 = sem sensor.
+function tempMood(temp, hot, critical) {
+    if (!temp) return "sleep"
+    return temp >= critical ? "alarm" : temp >= hot ? "busy" : "sleep"
+}
+
+// O pior dos humores (sleep < idle < busy < alarm).
+function worstMood(a, b) {
+    const order = ["sleep", "idle", "busy", "alarm"]
+    return order[Math.max(order.indexOf(a), order.indexOf(b))]
+}
+
+// Taxa (bytes/s) entre duas leituras de contadores { rx, tx } tiradas em t (ms).
+function netRate(prev, cur, dtMs) {
+    if (!prev || !cur || dtMs <= 0) return { rx: 0, tx: 0 }
+    const r = v => Math.max(0, v) / (dtMs / 1000)
+    return { rx: r(cur.rx - prev.rx), tx: r(cur.tx - prev.tx) }
+}
+
+// Saída do comando de disco:
+//   "df <total> <usado>"  (bytes do sistema de arquivos onde fica o DockerRootDir)
+//   "<Tipo>\t<Tamanho>\t<Recuperável (x%)>" por linha de docker system df
+function parseDisk(text) {
+    const r = { total: 0, used: 0, docker: 0, reclaimable: 0, parts: {} }
+    for (const line of (text || "").split("\n")) {
+        if (line.startsWith("df ")) {
+            const f = line.split(/\s+/)
+            r.total = parseFloat(f[1]) || 0
+            r.used = parseFloat(f[2]) || 0
+        } else if (line.indexOf("\t") > 0) {
+            const [type, size, recl] = line.split("\t")
+            const b = parseBytes(size)
+            r.parts[type] = b
+            r.docker += b
+            r.reclaimable += parseBytes(recl)
+        }
+    }
+    return r
+}
+
+// "/nome 3" por linha (docker inspect) -> { nome: 3 }
+function parseRestarts(text) {
+    const r = {}
+    for (const line of (text || "").split("\n")) {
+        const m = /^\/?(\S+)\s+(\d+)$/.exec(line.trim())
+        if (m) r[m[1]] = parseInt(m[2])
+    }
+    return r
+}
+
+// Containers cujo contador de reinícios subiu desde a leitura anterior.
+function restartBumps(prev, cur) {
+    return Object.keys(cur).filter(n => prev[n] !== undefined && cur[n] > prev[n])
+}
+
+// Remove códigos ANSI (cores) e caracteres de controle dos logs.
+function cleanLog(text) {
+    return (text || "").replace(/\x1b\[[0-9;?]*[A-Za-z]/g, "").replace(/[\x00-\x08\x0b-\x1f\x7f]/g, "")
+}
+
+// Fala da mascote para um evento.
+function eventSpeech(ev) {
+    switch (ev.kind) {
+    case "crash": return `💥 ${ev.name} caiu! (código ${ev.exitCode})`
+    case "restarting": return `🔁 ${ev.name} não para de reiniciar…`
+    case "unhealthy": return `🩺 ${ev.name} está passando mal`
+    case "recovered": return `✨ ${ev.name} voltou!`
+    case "restart-bump": return `↻ ${ev.name} reiniciou sozinho`
+    case "docker-down": return "🔌 cadê o docker?!"
+    case "docker-up": return "✨ docker de volta!"
+    }
+    return ""
 }

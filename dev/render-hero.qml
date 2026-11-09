@@ -68,7 +68,7 @@ Window {
         }
         Text {
             x: 70; y: 196
-            text: "> plasmoid KDE Plasma 6 · 6 mascotes · 6 temas · zero GPU extra_"
+            text: "> plasmoid KDE Plasma 6 · 11 mascotes · 6 temas · zero GPU extra_"
             color: "#00f0ff"
             font.family: "Hack Nerd Font Mono"; font.pixelSize: 17
         }

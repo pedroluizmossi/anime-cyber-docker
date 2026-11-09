@@ -9,6 +9,9 @@
 //   D  hardware (fone)     A  LED (acompanha o humor)
 // eyeBg: papel usado no lugar do olho quando ele fecha (o traço vai na última linha do olho).
 // shadeFrom: linha a partir da qual P vira sombra automaticamente (só a neko usa).
+// colors (opcional): cores fixas que ignoram o tema — { fur, ear } — para mascotes
+// com cor "de verdade" (sapo verde, chip de silício, placas de vídeo).
+// vital (opcional): recurso que a mascote representa na coluna de sinais vitais.
 
 const sprites = {
     neko: {
@@ -131,10 +134,119 @@ const sprites = {
             ".KPPFFFFFFFFPPK.",
             "..KKKKKKKKKKKK.."
         ]
+    },
+    sapo: {
+        label: "Sapo",
+        vital: "ram",
+        eyeBg: "M",
+        colors: { fur: "#3ddc54", ear: "#d8ffb0" },
+        grid: [
+            "..KKKK....KKKK..",
+            ".KMMMMK..KMMMMK.",
+            ".KMEEWK..KMEEWK.",
+            ".KMEEEKKKKMEEEK.",
+            "KPKKKKPPPPKKKKPK",
+            "KHPPPPPAPPPPPPPK",
+            "KPPPPPPPPPPPPPPK",
+            "KPBBPPPPPPPPBBPK",
+            "KPPTPPPPPPPPTPPK",
+            "KPPPTTTTTTTTPPPK",
+            "KSPPPMMMMMMPPPSK",
+            "KSSPMMMMMMMMPSSK",
+            ".KSSPMMMMMMPSSK.",
+            "..KKKKKKKKKKKK.."
+        ]
+    },
+    chip: {
+        label: "Microprocessador",
+        vital: "cpu",
+        eyeBg: "C",
+        colors: { fur: "#8a93a6" },
+        grid: [
+            "..D.D.D..D.D.D..",
+            ".KKKKKKKKKKKKKK.",
+            ".KHPPPPPPPPPPSK.",
+            "DKPKKKKKKKKKKSKD",
+            ".KPKCCCCCCCCKSK.",
+            "DKPKCEWCCEWCKSKD",
+            ".KPKCEECCEECKSK.",
+            "DKPKCCCTTCCCKSKD",
+            ".KPKKKKKKKKKKSK.",
+            "DKPPBPPPPPPBPSKD",
+            ".KPPPPPAPPPPPSK.",
+            "DKSSSSSSSSSSSSKD",
+            ".KKKKKKKKKKKKKK.",
+            "..D.D.D..D.D.D.."
+        ]
+    },
+    nvidia: {
+        label: "GPU NVIDIA",
+        vital: "gpu",
+        eyeBg: "C",
+        colors: { fur: "#76b900", ear: "#ffcc33" },
+        grid: [
+            ".KKKKKKKKKKKKKKK",
+            "DKHPPPPPPPPPPPSK",
+            "DKPKKKKPPKKKKPSK",
+            "DKKCCCCKKCCCCKSK",
+            "DKKCEWCKKCEWCKSK",
+            "DKKCEECKKCEECKSK",
+            "DKKCCCCKKCCCCKSK",
+            "DKPKKKKPPKKKKPSK",
+            "DKPBPPPTTPPPBPSK",
+            "DKPPPPPPPPPPPASK",
+            "DKSSSSSSSSSSSSSK",
+            ".KKKKKKKKKKKKKKK",
+            "....MMMMMM.MMM..",
+            "....MMMMMM.MMM.."
+        ]
+    },
+    amd: {
+        label: "GPU AMD",
+        vital: "gpu",
+        eyeBg: "C",
+        colors: { fur: "#ed1c24", ear: "#ffcc33" },
+        grid: [
+            ".KKKKKKKKKKKKKK.",
+            "DKSHHPPPPPPHHSKK",
+            "DKPKKKKHHKKKKPSK",
+            "DKKCCCCKKCCCCKSK",
+            "DKKCWECKKCWECKSK",
+            "DKKCEECKKCEECKSK",
+            "DKKCCCCKKCCCCKSK",
+            "DKPKKKKHHKKKKPSK",
+            "DKHBPPPTTPPPBHSK",
+            "DKPHPPPPPPPPHASK",
+            "DKSSHSSSSSSHSSSK",
+            ".KKKKKKKKKKKKKKK",
+            "....MMMMMM.MMM..",
+            "....MMMMMM.MMM.."
+        ]
+    },
+    disquete: {
+        label: "Disquete",
+        vital: "disk",
+        eyeBg: "M",
+        grid: [
+            "KKKKKKKKKKKKKKK.",
+            "KPPPDDDDDDDPPPKK",
+            "KPPPDDDKKDDPPPPK",
+            "KPPPDDDKKDDPPPPK",
+            "KPPPDDDDDDDPPPPK",
+            "KHPPPPPPPPPPPPAK",
+            "KPKKKKKKKKKKKKPK",
+            "KPKMMMMMMMMMMKPK",
+            "KPKMEEWMMEEWMKPK",
+            "KPKMEEEMMEEEMKPK",
+            "KPKMBBMMMMBBMKPK",
+            "KPKMMMMTTMMMMKPK",
+            "KSKMMMMMMMMMMKSK",
+            "KKKKKKKKKKKKKKKK"
+        ]
     }
 }
 
-const order = ["neko", "robo", "kitsune", "usagi", "yurei", "hacker"]
+const order = ["neko", "robo", "kitsune", "usagi", "yurei", "hacker", "sapo", "chip", "nvidia", "amd", "disquete"]
 
 // linha onde fica o traço do olho fechado = última linha que contém um olho
 for (const key of order) {
@@ -144,7 +256,7 @@ for (const key of order) {
 }
 
 function list() {
-    return order.map(k => ({ key: k, label: sprites[k].label }))
+    return order.map(k => ({ key: k, label: sprites[k].label, vital: sprites[k].vital || "" }))
 }
 
 function get(name) {

@@ -21,6 +21,12 @@ run dev/preview-hud.qml -- 0 neon - "$tmp/hud-flat.png"
 run dev/preview-hud.qml -- 1 synthwave - "$tmp/hud-group.png"
 magick "$tmp/hud-flat.png" "$tmp/hud-group.png" -background none -splice 24x0 +append -chop 24x0 "$out/popups.png"
 
+echo "▸ HUD largo com sinais vitais"
+run dev/preview-vitals.qml -- neon busy "$tmp/vitals-a.png"
+run dev/preview-vitals.qml -- synthwave hot "$tmp/vitals-b.png"
+magick "$tmp/vitals-a.png" -trim +repage "$out/vitals.png"
+magick "$tmp/vitals-b.png" -trim +repage "$out/vitals-hot.png"
+
 echo "▸ painel (ampliado 2× sem suavizar)"
 run dev/render-panel.qml -- "$tmp/panel.png"
 magick "$tmp/panel.png" -filter point -resize 200% "$out/panel.png"

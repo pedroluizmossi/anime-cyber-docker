@@ -28,7 +28,7 @@ em `~/.local/share/plasma/plasmoids/` com o `kpackagetool6`.</sub>
 
 **Requisitos:** KDE Plasma 6 · Docker acessível sem `sudo` (usuário no grupo `docker`) ·
 Konsole para os botões de logs/shell · `notify-send` (libnotify) para as notificações ·
-`nvidia-smi` opcional (GPU e VRAM por container) · Docker Compose v2 para as ações de stack.
+`nvidia-smi` opcional (GPU e VRAM por container; placas AMD são lidas pelo driver `amdgpu`, sem VRAM por container) · Docker Compose v2 para as ações de stack.
 
 ## Humores
 
@@ -53,11 +53,38 @@ A mascote fica nítida em qualquer tamanho (a sprite é alinhada à grade de pix
 
 ## HUD
 
-<p align="center"><img src="docs/img/popups.png" alt="Popup HUD nos humores idle, busy e alarm" width="100%"></p>
+<p align="center"><img src="docs/img/vitals.png" alt="HUD largo com a coluna de sinais vitais, balão de fala e prévia de logs" width="100%"></p>
+<p align="center"><img src="docs/img/vitals-hot.png" alt="Sinais vitais superaquecidos em modo compacto no tema Synthwave" width="100%"></p>
+<p align="center"><img src="docs/img/popups.png" alt="Popup HUD estreito: lista simples e agrupada por stack" width="100%"></p>
 
 Clique na mascote para abrir o HUD:
 
 - **Contadores** `RUN / STOP / ERR` e o uso de **CPU, RAM e GPU** do computador (com a VRAM usada/total); passe o mouse para ver quanto é do Docker.
+- **Coluna de sinais vitais** (`▥`): CPU, RAM e GPU ganham cada um uma mascote cujo humor segue a
+  métrica (dorme parada, flutua no normal, pula sob carga, entra em alarme saturada), com barra
+  segmentada (parte do Docker em destaque), histórico do último minuto e o container mais pesado.
+  Por padrão são o Microprocessador, o Sapo e a placa NVIDIA ou AMD (detectada automaticamente);
+  troque em *Configurar → Aparência → Sinais vitais*. Em popups estreitos (< 640 px) volta aos
+  quadros compactos do topo.
+- **Temperatura** da CPU (hwmon: `coretemp`/`k10temp`/`zenpower`) e da GPU nos cartões: acima do limite
+  "quente" a mascote sua, solta vapor e pula; acima do "crítico" entra em alarme. Limites em
+  *Configurar → Comportamento → Temperatura*.
+- **Disco · rede**: uso do disco onde fica o Docker (parte do Docker em destaque), tráfego de rede
+  ao vivo e o espaço recuperável, com botão **limpar** (dois cliques) que roda
+  `docker image prune -af` + `docker builder prune -f`.
+- **A mascote comenta**: um balão de fala aparece quando um container cai, entra em loop, fica
+  unhealthy ou reinicia sozinho — e ela comemora (humor `happy` ♥) quando ele volta.
+- **Prévia de logs**: passe o mouse no `≡` para ver as últimas linhas (erros em vermelho, avisos em
+  amarelo) sem abrir o terminal.
+- **Visual vivo**: horizonte cyberpunk em pixel art atrás da lista (mais janelas acesas com a CPU,
+  chuva neon no alarme), fundo animado por tema (chuva Matrix, sol Synthwave, estrelas Vaporwave,
+  neve Ghost, linhas de velocidade Akira), varredura de CRT ao abrir o popup, números que contam,
+  barras que acendem em sequência e contadores com LED e efeito de placa de flip. Cartões
+  compactos automáticos quando não cabem.
+- **Mascotes interativas**: clique numa mascote do HUD para um carinho, clique duplo para ela dançar;
+  no alarme as mascotes dos cartões olham para a principal.
+- **Contador de reinícios** `↻N` por container (RestartCount do Docker), piscando em vermelho
+  quando subiu nos últimos 10 minutos.
 - **Mini-gráficos de CPU e memória** dos últimos minutos em cada container, e a **VRAM por container**
   (o processo na GPU é ligado ao container dono pelo cgroup) — ótimo para servidores de LLM.
 - **Portas clicáveis:** `:8090 ↗` abre `http://localhost:8090` no navegador.
@@ -74,11 +101,13 @@ O CyberDock avisa pelo sistema de notificações do KDE quando um container **ca
 notificação. Também avisa quando o container volta ao normal e quando o Docker sai do ar (dá para
 desligar cada tipo em *Comportamento*). No máximo uma notificação por minuto para o mesmo evento.
 
-## 6 mascotes
+## 11 mascotes
 
-<p align="center"><img src="docs/img/mascots.png" alt="As seis mascotes nos quatro humores" width="700"></p>
+<p align="center"><img src="docs/img/mascots.png" alt="As onze mascotes nos quatro humores" width="700"></p>
 
-**Neko cyborg** · **Robô Unit-7** · **Kitsune** · **Usagi** · **Yūrei** · **Hacker-chan**
+**Neko cyborg** · **Robô Unit-7** · **Kitsune** · **Usagi** · **Yūrei** · **Hacker-chan** ·
+**Sapo** · **Microprocessador** · **GPU NVIDIA** · **GPU AMD** · **Disquete** — qualquer uma pode ser a
+mascote do painel ou de um cartão de sinal vital.
 
 ## 6 temas (+ personalizado)
 
@@ -94,7 +123,7 @@ do pelo e do visor. O tema vale para tudo: mascote, aura, HUD, botões e tooltip
 Botão direito na mascote → **Configurar CyberDock…**
 
 **Aparência** — com prévia ao vivo dos 4 humores
-- **Mascote:** galeria clicável com as 6 mascotes.
+- **Mascote:** galeria clicável com as 11 mascotes, mais a mascote de cada cartão de sinal vital.
 - **Tema:** os 6 temas ou Personalizado.
 - **Tamanho do ícone:** 50–100% da altura do painel.
 - **Intensidade do glow:** 0 (desligado) a 100%.

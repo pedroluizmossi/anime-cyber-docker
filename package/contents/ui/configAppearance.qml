@@ -18,9 +18,50 @@ KCM.SimpleKCM {
     property bool cfg_showCounter
     property int cfg_glowLevel
     property bool cfg_animations
+    property string cfg_cpuMascot
+    property string cfg_ramMascot
+    property string cfg_gpuMascot
+    property string cfg_diskMascot
 
     readonly property string mascotKey: cfg_mascot || "neko"   // chave nova pode vir vazia
     readonly property var previewTheme: Themes.get(cfg_theme, cfg_customFur, cfg_customVisor)
+
+    // seletor de mascote de um cartão de sinal vital: combo + prévia nos humores idle/busy/alarm
+    component VitalPicker: RowLayout {
+        id: picker
+        property string value
+        property bool allowAuto: false
+        property var theme
+        property int glow: 75
+        property bool anim: true
+        signal picked(string key)
+        readonly property var options: (allowAuto ? [{ key: "auto", label: "Automático (NVIDIA / AMD)" }] : []).concat(Sprites.list())
+        // na prévia, "auto" mostra a placa NVIDIA
+        readonly property string shownKind: value === "auto" || !value ? "nvidia" : value
+        spacing: Kirigami.Units.smallSpacing
+        QQC2.ComboBox {
+            id: box
+            model: picker.options
+            textRole: "label"
+            valueRole: "key"
+            currentIndex: count > 0 ? Math.max(0, indexOfValue(picker.value)) : -1
+            onActivated: picker.picked(currentValue)
+            Layout.preferredWidth: Kirigami.Units.gridUnit * 13
+        }
+        Repeater {
+            model: ["idle", "busy", "alarm"]
+            Mascot {
+                required property string modelData
+                width: 40; height: 35
+                Layout.preferredWidth: 40; Layout.preferredHeight: 35
+                mood: modelData
+                kind: picker.shownKind
+                theme: picker.theme
+                glowLevel: Math.round(picker.glow * 0.6)
+                animated: picker.anim
+            }
+        }
+    }
 
     Kirigami.FormLayout {
 
@@ -40,7 +81,7 @@ KCM.SimpleKCM {
                 anchors.centerIn: parent
                 spacing: 18
                 Repeater {
-                    model: ["sleep", "idle", "busy", "alarm"]
+                    model: ["sleep", "idle", "busy", "alarm", "happy"]
                     Column {
                         spacing: 4
                         Mascot {
@@ -167,6 +208,38 @@ KCM.SimpleKCM {
             }
             QQC2.Label { text: page.cfg_glowLevel === 0 ? "desligado" : page.cfg_glowLevel + "%" }
         }
+
+        Item {
+            Kirigami.FormData.isSection: true
+            Kirigami.FormData.label: "Sinais vitais (coluna do HUD)"
+        }
+        VitalPicker {
+            Kirigami.FormData.label: "CPU:"
+            value: page.cfg_cpuMascot || "chip"
+            theme: page.previewTheme; glow: page.cfg_glowLevel; anim: page.cfg_animations
+            onPicked: key => page.cfg_cpuMascot = key
+        }
+        VitalPicker {
+            Kirigami.FormData.label: "RAM:"
+            value: page.cfg_ramMascot || "sapo"
+            theme: page.previewTheme; glow: page.cfg_glowLevel; anim: page.cfg_animations
+            onPicked: key => page.cfg_ramMascot = key
+        }
+        VitalPicker {
+            Kirigami.FormData.label: "GPU:"
+            value: page.cfg_gpuMascot || "auto"
+            allowAuto: true
+            theme: page.previewTheme; glow: page.cfg_glowLevel; anim: page.cfg_animations
+            onPicked: key => page.cfg_gpuMascot = key
+        }
+        VitalPicker {
+            Kirigami.FormData.label: "Disco / rede:"
+            value: page.cfg_diskMascot || "disquete"
+            theme: page.previewTheme; glow: page.cfg_glowLevel; anim: page.cfg_animations
+            onPicked: key => page.cfg_diskMascot = key
+        }
+
+        Item { Kirigami.FormData.isSection: true }
 
         QQC2.CheckBox {
             Kirigami.FormData.label: "Painel:"

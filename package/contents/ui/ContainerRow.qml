@@ -11,12 +11,15 @@ Rectangle {
     property var stat: null           // { cpu, mem, memBytes }
     property var hist: null           // { cpu: [], mem: [] }
     property real vramMiB: 0
+    property int restartCount: 0      // RestartCount do Docker (política de restart)
+    property bool restartBumped: false // subiu nos últimos minutos
     property bool favorite: false
     property bool showGraphs: true
     property var theme: Themes.get("neon")
     signal action(string verb)
     signal toggleFavorite()
     signal openUrl(string url)
+    signal peekLogs(bool on, Item anchor)   // hover no botão de logs: prévia das últimas linhas
 
     readonly property bool isRunning: ["running", "restarting", "paused"].includes(container.state)
     readonly property var ports: container.ports || []
@@ -85,6 +88,36 @@ Rectangle {
                     color: rowItem.theme.text
                     font.family: "Hack Nerd Font Mono"; font.bold: true; font.pixelSize: 13
                     elide: Text.ElideRight
+                }
+                Rectangle {
+                    id: rsChip
+                    visible: rowItem.restartCount > 0
+                    implicitWidth: rsLabel.implicitWidth + 8
+                    implicitHeight: 15
+                    radius: 2
+                    readonly property color cc: rowItem.restartBumped ? rowItem.theme.alarm : rowItem.theme.warn
+                    color: Qt.rgba(cc.r, cc.g, cc.b, 0.15)
+                    border.width: 1
+                    border.color: Qt.rgba(cc.r, cc.g, cc.b, rowItem.restartBumped ? 0.9 : 0.4)
+                    Text {
+                        id: rsLabel
+                        anchors.centerIn: parent
+                        text: "↻" + rowItem.restartCount
+                        color: rsChip.cc
+                        font.family: "Hack Nerd Font Mono"; font.pixelSize: 9; font.bold: true
+                    }
+                    SequentialAnimation on opacity {
+                        running: rowItem.restartBumped
+                        loops: Animation.Infinite
+                        NumberAnimation { to: 0.35; duration: 450 }
+                        NumberAnimation { to: 1.0; duration: 450 }
+                        onStopped: rsChip.opacity = 1
+                    }
+                    HoverHandler { id: rsHover }
+                    ToolTipLite {
+                        text: `reiniciado ${rowItem.restartCount}× pelo Docker` + (rowItem.restartBumped ? " (subiu agora há pouco)" : "")
+                        shown: rsHover.hovered; accent: rowItem.theme.visor; background: rowItem.theme.bg0
+                    }
                 }
                 Repeater {
                     model: rowItem.ports.slice(0, 3)
@@ -205,8 +238,10 @@ Rectangle {
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     onClicked: rowItem.action(modelData.v)
+                    onContainsMouseChanged: if (modelData.v === "logs") rowItem.peekLogs(containsMouse, parent)
                 }
-                ToolTipLite { text: modelData.t; shown: btn.containsMouse; accent: rowItem.theme.visor; background: rowItem.theme.bg0 }
+                // o botão de logs mostra a prévia (no HUD) em vez do tooltip
+                ToolTipLite { text: modelData.t; shown: btn.containsMouse && modelData.v !== "logs"; accent: rowItem.theme.visor; background: rowItem.theme.bg0 }
             }
         }
     }

@@ -13,6 +13,15 @@
     <entry name="showCounter" type="Bool"><default>true</default></entry>
     <entry name="glowLevel" type="Int"><default>75</default><min>0</min><max>100</max></entry>
     <entry name="animations" type="Bool"><default>true</default></entry>
+    <!-- mascotes da coluna de sinais vitais ("auto" na GPU = conforme a placa detectada) -->
+    <entry name="cpuMascot" type="String"><default>chip</default></entry>
+    <entry name="ramMascot" type="String"><default>sapo</default></entry>
+    <entry name="gpuMascot" type="String"><default>auto</default></entry>
+    <entry name="diskMascot" type="String"><default>disquete</default></entry>
+    <!-- Temperatura (°C): quente = mascote sua e pula; crítica = alarme -->
+    <entry name="showTemps" type="Bool"><default>true</default></entry>
+    <entry name="tempHot" type="Int"><default>80</default><min>30</min><max>120</max></entry>
+    <entry name="tempCritical" type="Int"><default>90</default><min>30</min><max>120</max></entry>
     <!-- Comportamento -->
     <entry name="refreshSeconds" type="Int"><default>3</default><min>1</min><max>60</max></entry>
     <entry name="busyGpu" type="Int"><default>40</default><min>1</min><max>100</max></entry>
@@ -25,6 +34,7 @@
     <entry name="groupStacks" type="Bool"><default>false</default></entry>
     <entry name="hideStopped" type="Bool"><default>false</default></entry>
     <entry name="showGraphs" type="Bool"><default>true</default></entry>
+    <entry name="showVitals" type="Bool"><default>true</default></entry>
     <entry name="favorites" type="StringList"><default></default></entry>
   </group>
 </kcfg>

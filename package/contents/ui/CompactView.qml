@@ -18,7 +18,7 @@ Item {
     property bool animated: true
     signal activated()
 
-    readonly property color neon: mood === "alarm" ? theme.alarm : mood === "sleep" ? theme.sleep : theme.visor
+    readonly property color neon: mood === "alarm" ? theme.alarm : mood === "sleep" ? theme.sleep : mood === "happy" ? theme.ok : theme.visor
     readonly property int iconHeight: Math.round(height * iconScale / 100)
 
     implicitWidth: row.implicitWidth + 4
