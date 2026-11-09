@@ -5,10 +5,12 @@ import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
 import org.kde.kquickcontrols as KQControls
 import "Themes.js" as Themes
+import "Sprites.js" as Sprites
 
 KCM.SimpleKCM {
     id: page
 
+    property string cfg_mascot
     property string cfg_theme
     property string cfg_customFur
     property string cfg_customVisor
@@ -17,6 +19,7 @@ KCM.SimpleKCM {
     property int cfg_glowLevel
     property bool cfg_animations
 
+    readonly property string mascotKey: cfg_mascot || "neko"   // chave nova pode vir vazia
     readonly property var previewTheme: Themes.get(cfg_theme, cfg_customFur, cfg_customVisor)
 
     Kirigami.FormLayout {
@@ -43,6 +46,7 @@ KCM.SimpleKCM {
                         Mascot {
                             width: 64; height: 56
                             mood: modelData
+                            kind: page.mascotKey
                             theme: page.previewTheme
                             glowLevel: page.cfg_glowLevel
                             animated: page.cfg_animations
@@ -58,13 +62,62 @@ KCM.SimpleKCM {
             }
         }
 
+        // galeria de mascotes: clique para escolher
+        Flow {
+            Kirigami.FormData.label: "Mascote:"
+            Layout.preferredWidth: Kirigami.Units.gridUnit * 26
+            spacing: 6
+            Repeater {
+                model: Sprites.list()
+                delegate: Rectangle {
+                    id: tile
+                    // propriedades próprias (não "required") para o binding de seleção reagir certo
+                    readonly property string key: modelData.key
+                    readonly property string label: modelData.label
+                    readonly property bool selected: page.mascotKey === key
+                    width: 96; height: 78; radius: 4
+                    color: selected ? Qt.rgba(page.previewTheme.visor.r, page.previewTheme.visor.g, page.previewTheme.visor.b, 0.18)
+                                    : (tileMouse.containsMouse ? Qt.rgba(1, 1, 1, 0.06) : "transparent")
+                    border.width: selected ? 2 : 1
+                    border.color: selected ? page.previewTheme.visor : Qt.rgba(1, 1, 1, 0.15)
+                    Mascot {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: 6
+                        width: 48; height: 42
+                        kind: tile.key
+                        mood: "idle"
+                        theme: page.previewTheme
+                        glowLevel: tile.selected ? page.cfg_glowLevel : 0
+                        animated: tile.selected && page.cfg_animations
+                    }
+                    QQC2.Label {
+                        anchors.bottom: parent.bottom; anchors.bottomMargin: 4
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: tile.label
+                        font: Kirigami.Theme.smallFont
+                        width: parent.width - 6
+                        horizontalAlignment: Text.AlignHCenter
+                        elide: Text.ElideRight
+                    }
+                    MouseArea {
+                        id: tileMouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: page.cfg_mascot = tile.key
+                    }
+                }
+            }
+        }
+
         QQC2.ComboBox {
             id: themeBox
             Kirigami.FormData.label: "Tema:"
             model: Themes.list()
             textRole: "label"
             valueRole: "key"
-            currentIndex: Math.max(0, indexOfValue(page.cfg_theme))
+            // depende de count: reavalia quando o modelo fica pronto
+            currentIndex: count > 0 ? Math.max(0, indexOfValue(page.cfg_theme)) : -1
             onActivated: page.cfg_theme = currentValue
         }
 

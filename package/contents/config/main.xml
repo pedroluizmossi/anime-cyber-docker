@@ -5,6 +5,7 @@
   <kcfgfile name=""/>
   <group name="General">
     <!-- Aparência -->
+    <entry name="mascot" type="String"><default>neko</default></entry>
     <entry name="theme" type="String"><default>neon</default></entry>
     <entry name="customFur" type="String"><default>#ff2bd6</default></entry>
     <entry name="customVisor" type="String"><default>#00f0ff</default></entry>

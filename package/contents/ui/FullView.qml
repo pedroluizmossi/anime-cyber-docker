@@ -16,8 +16,11 @@ Item {
     property string errorText: ""
     property date lastUpdate: new Date()
     property var theme: Themes.get("neon")
+    property string kind: "neko"
     property int glowLevel: 75
     property bool animated: true
+    property bool active: true          // popup aberto; fechado = animações pausadas
+    readonly property bool animating: animated && active
     signal action(string verb, string name)
     signal refresh()
 
@@ -63,7 +66,7 @@ Item {
             GradientStop { position: 0.0; color: "transparent" }
             GradientStop { position: 1.0; color: full.neon }
         }
-        NumberAnimation on y { running: full.animated; from: -40; to: full.height; duration: 4000; loops: Animation.Infinite }
+        NumberAnimation on y { running: full.animating; from: -40; to: full.height; duration: 4000; loops: Animation.Infinite }
     }
 
     ColumnLayout {
@@ -76,9 +79,10 @@ Item {
             spacing: 12
             Mascot {
                 mood: full.mood
+                kind: full.kind
                 theme: full.theme
                 glowLevel: full.glowLevel
-                animated: full.animated
+                animated: full.animating
                 Layout.preferredWidth: 84
                 Layout.preferredHeight: 74
             }
@@ -94,7 +98,7 @@ Item {
                     Text { id: title; text: "CYBERDOCK"; color: "#ffffff"; font.family: "Hack Nerd Font Mono"; font.bold: true; font.pixelSize: 24; font.letterSpacing: 3 }
                     QtObject { id: glitch; property real offset: 1 }
                     SequentialAnimation {
-                        running: full.animated; loops: Animation.Infinite
+                        running: full.animating; loops: Animation.Infinite
                         PauseAnimation { duration: full.mood === "alarm" ? 300 : 2600 }
                         NumberAnimation { target: glitch; property: "offset"; to: 4; duration: 60 }
                         NumberAnimation { target: glitch; property: "offset"; to: -3; duration: 60 }
@@ -110,7 +114,7 @@ Item {
                     text: "> " + full.moodText[full.mood][1] + (cursor.visible ? "_" : " ")
                     color: Qt.lighter(full.theme.sub, 1.3)
                     font.family: "Hack Nerd Font Mono"; font.pixelSize: 11
-                    Timer { id: cursor; property bool visible: true; interval: 500; running: true; repeat: true; onTriggered: visible = !visible }
+                    Timer { id: cursor; property bool visible: true; interval: 500; running: full.active; repeat: true; onTriggered: visible = !visible }
                 }
             }
         }

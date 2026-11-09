@@ -41,6 +41,7 @@ PlasmoidItem {
         total: root.containers.length
         problems: root.problemCount
         theme: root.theme
+        kind: root.cfg.mascot
         iconScale: root.cfg.iconScale
         showCounter: root.cfg.showCounter
         glowLevel: root.cfg.glowLevel
@@ -59,8 +60,10 @@ PlasmoidItem {
         errorText: root.errorText
         lastUpdate: root.lastUpdate
         theme: root.theme
+        kind: root.cfg.mascot
         glowLevel: root.cfg.glowLevel
         animated: root.cfg.animations
+        active: root.expanded
         onAction: (verb, name) => root.dockerAction(verb, name)
         onRefresh: root.poll()
     }

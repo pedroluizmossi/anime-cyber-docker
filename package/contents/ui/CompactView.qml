@@ -11,6 +11,7 @@ Item {
     property int total: 0
     property int problems: 0
     property var theme: Themes.get("neon")
+    property string kind: "neko"
     property int iconScale: 100
     property bool showCounter: true
     property int glowLevel: 75
@@ -33,6 +34,7 @@ Item {
 
         Mascot {
             mood: compact.mood
+            kind: compact.kind
             theme: compact.theme
             glowLevel: compact.glowLevel
             animated: compact.animated
