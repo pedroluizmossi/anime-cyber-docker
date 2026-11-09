@@ -14,9 +14,9 @@ Window {
         onStatusChanged: if (status === Loader.Error) console.log("ERRO ao carregar configAppearance")
         onLoaded: {
             item.cfg_theme = win.args[win.args.length - 2]
-            item.cfg_mascot = ""
+            item.cfg_mascot = "hacker"
             item.cfg_customFur = "#ff2bd6"; item.cfg_customVisor = "#00f0ff"
-            item.cfg_iconScale = 100; item.cfg_showCounter = true; item.cfg_glowLevel = 75; item.cfg_animations = false
+            item.cfg_iconScale = 100; item.cfg_showCounter = true; item.cfg_glowLevel = 75; item.cfg_animations = true
         }
     }
     Timer {

@@ -64,7 +64,14 @@ KCM.SimpleKCM {
 
         // galeria de mascotes: clique para escolher
         Flow {
+            id: gallery
             Kirigami.FormData.label: "Mascote:"
+            // os delegates leem estes valores via parent: referenciar "page" direto falha
+            // no 1º delegate criado (id ainda indisponível) e o binding nunca reavalia
+            property var galleryTheme: page.previewTheme
+            property string selectedKey: page.mascotKey
+            property int glowLvl: page.cfg_glowLevel
+            property bool anim: page.cfg_animations
             Layout.preferredWidth: Kirigami.Units.gridUnit * 26
             spacing: 6
             Repeater {
@@ -74,21 +81,23 @@ KCM.SimpleKCM {
                     // propriedades próprias (não "required") para o binding de seleção reagir certo
                     readonly property string key: modelData.key
                     readonly property string label: modelData.label
-                    readonly property bool selected: page.mascotKey === key
+                    readonly property var g: parent      // = gallery
+                    readonly property var th: g ? g.galleryTheme : undefined
+                    readonly property bool selected: !!g && g.selectedKey === key
                     width: 96; height: 78; radius: 4
-                    color: selected ? Qt.rgba(page.previewTheme.visor.r, page.previewTheme.visor.g, page.previewTheme.visor.b, 0.18)
+                    color: selected && th ? Qt.rgba(th.visor.r, th.visor.g, th.visor.b, 0.18)
                                     : (tileMouse.containsMouse ? Qt.rgba(1, 1, 1, 0.06) : "transparent")
                     border.width: selected ? 2 : 1
-                    border.color: selected ? page.previewTheme.visor : Qt.rgba(1, 1, 1, 0.15)
+                    border.color: selected && th ? th.visor : Qt.rgba(1, 1, 1, 0.15)
                     Mascot {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: 6
                         width: 48; height: 42
                         kind: tile.key
                         mood: "idle"
-                        theme: page.previewTheme
-                        glowLevel: tile.selected ? page.cfg_glowLevel : 0
-                        animated: tile.selected && page.cfg_animations
+                        theme: tile.th
+                        glowLevel: tile.selected && tile.g ? tile.g.glowLvl : 0
+                        animated: tile.selected && !!tile.g && tile.g.anim
                     }
                     QQC2.Label {
                         anchors.bottom: parent.bottom; anchors.bottomMargin: 4
