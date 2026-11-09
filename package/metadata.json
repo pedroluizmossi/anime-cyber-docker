@@ -1,0 +1,19 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "pedro.mossi@senior.com.br",
+                "Name": "Pedro Mossi"
+            }
+        ],
+        "Category": "System Information",
+        "Description": "Neko cyborg neon que vigia seus containers Docker",
+        "Icon": "docker",
+        "Id": "com.pedro.cyberdock",
+        "License": "MIT",
+        "Name": "CyberDock",
+        "Version": "0.1.0"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

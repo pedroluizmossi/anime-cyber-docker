@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0 http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile name=""/>
+  <group name="General">
+    <!-- Aparência -->
+    <entry name="theme" type="String"><default>neon</default></entry>
+    <entry name="customFur" type="String"><default>#ff2bd6</default></entry>
+    <entry name="customVisor" type="String"><default>#00f0ff</default></entry>
+    <entry name="iconScale" type="Int"><default>100</default><min>50</min><max>100</max></entry>
+    <entry name="showCounter" type="Bool"><default>true</default></entry>
+    <entry name="glowLevel" type="Int"><default>75</default><min>0</min><max>100</max></entry>
+    <entry name="animations" type="Bool"><default>true</default></entry>
+    <!-- Comportamento -->
+    <entry name="refreshSeconds" type="Int"><default>3</default><min>1</min><max>60</max></entry>
+    <entry name="busyGpu" type="Int"><default>40</default><min>1</min><max>100</max></entry>
+    <entry name="busyCpu" type="Int"><default>60</default><min>1</min><max>1000</max></entry>
+  </group>
+</kcfg>
