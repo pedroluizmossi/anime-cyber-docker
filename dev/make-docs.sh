@@ -16,13 +16,10 @@ echo "▸ galeria de mascotes";  run dev/preview-mascots.qml -- neon "$out/masco
 echo "▸ galeria de temas";     run dev/preview-themes.qml -- "$tmp/themes.png"
 magick "$tmp/themes.png" -background "#05020c" -flatten "$out/themes.png"
 
-echo "▸ popups"
-run dev/render-popup.qml -- idle neon neko "$out/popup-idle.png"
-run dev/render-popup.qml -- alarm akira kitsune "$out/popup-alarm.png"
-run dev/render-popup.qml -- busy synthwave robo "$out/popup-busy.png"
-magick "$out/popup-idle.png" "$out/popup-busy.png" "$out/popup-alarm.png" \
-    -background none -splice 24x0 +append -chop 24x0 "$out/popups.png"
-rm -f "$out"/popup-{idle,busy,alarm}.png
+echo "▸ HUD (lista simples + agrupado por stack)"
+run dev/preview-hud.qml -- 0 neon - "$tmp/hud-flat.png"
+run dev/preview-hud.qml -- 1 synthwave - "$tmp/hud-group.png"
+magick "$tmp/hud-flat.png" "$tmp/hud-group.png" -background none -splice 24x0 +append -chop 24x0 "$out/popups.png"
 
 echo "▸ painel (ampliado 2× sem suavizar)"
 run dev/render-panel.qml -- "$tmp/panel.png"

@@ -27,7 +27,8 @@ Não precisa de root nem de clonar o repositório — o script baixa só o pacot
 em `~/.local/share/plasma/plasmoids/` com o `kpackagetool6`.</sub>
 
 **Requisitos:** KDE Plasma 6 · Docker acessível sem `sudo` (usuário no grupo `docker`) ·
-Konsole para os botões de logs/shell · `nvidia-smi` opcional (indicador de GPU).
+Konsole para os botões de logs/shell · `notify-send` (libnotify) para as notificações ·
+`nvidia-smi` opcional (GPU e VRAM por container) · Docker Compose v2 para as ações de stack.
 
 ## Humores
 
@@ -54,9 +55,24 @@ A mascote fica nítida em qualquer tamanho (a sprite é alinhada à grade de pix
 
 <p align="center"><img src="docs/img/popups.png" alt="Popup HUD nos humores idle, busy e alarm" width="100%"></p>
 
-Clique na mascote para abrir o HUD: scanlines, título com glitch, contadores `RUN / STOP / ERR / GPU`
-e a lista de containers com estado, CPU, memória e projeto do Compose. Cada linha tem botões para
-**logs** (abre no Konsole), **shell** (`docker exec`), **reiniciar**, **parar** e **iniciar**.
+Clique na mascote para abrir o HUD:
+
+- **Contadores** `RUN / STOP / ERR` e o uso de **CPU, RAM e GPU** do computador (com a VRAM usada/total); passe o mouse para ver quanto é do Docker.
+- **Mini-gráficos de CPU e memória** dos últimos minutos em cada container, e a **VRAM por container**
+  (o processo na GPU é ligado ao container dono pelo cgroup) — ótimo para servidores de LLM.
+- **Portas clicáveis:** `:8090 ↗` abre `http://localhost:8090` no navegador.
+- **Stacks do Compose:** agrupe por projeto (`▤`), recolha grupos e use ▶ ↻ ■ para iniciar,
+  reiniciar ou parar a stack inteira (`docker compose -p <projeto> …`).
+- **Busca e filtros:** filtre por nome, imagem ou stack, oculte os parados (`◌`) e ligue/desligue os gráficos (`∿`).
+- **Favoritos:** ☆ fixa um container no topo da lista.
+- Ações por container: **logs** (Konsole), **shell** (`docker exec`), **reiniciar**, **parar**, **iniciar**.
+
+## Notificações
+
+O CyberDock avisa pelo sistema de notificações do KDE quando um container **cai**, entra em
+**loop de reinício** ou fica **unhealthy** — com botões **Ver logs** e **Reiniciar** na própria
+notificação. Também avisa quando o container volta ao normal e quando o Docker sai do ar (dá para
+desligar cada tipo em *Comportamento*). No máximo uma notificação por minuto para o mesmo evento.
 
 ## 6 mascotes
 
@@ -86,8 +102,11 @@ Botão direito na mascote → **Configurar CyberDock…**
 - **Animações:** desligue para uma mascote estática.
 
 **Comportamento**
-- Intervalo de atualização (1–60 s; CPU/mem são lidas no dobro do intervalo, mínimo 5 s).
+- Intervalo de atualização (1–60 s; CPU/mem/VRAM são lidas no dobro do intervalo, mínimo 5 s).
 - Limites do modo ⚡ busy: uso da GPU (%) e CPU de um container (% por núcleo).
+- Notificações: problemas, recuperação e Docker fora do ar.
+
+Os filtros do HUD (agrupar, ocultar parados, gráficos) e os favoritos ficam salvos automaticamente.
 
 ## Desempenho
 
@@ -129,7 +148,9 @@ Previews com dados de exemplo (salvam PNG, não precisam do Plasma):
 ```bash
 qml6 dev/preview-mascots.qml -- neon /tmp/m.png        # todas as mascotes num tema
 qml6 dev/preview-themes.qml -- /tmp/themes.png         # todos os temas
+qml6 dev/preview-hud.qml -- 1 neon - /tmp/hud.png      # HUD: agrupar 0|1, tema, busca|-
 qml6 dev/preview-full.qml -- alarm /tmp/full.png       # popup: sleep | idle | busy | alarm
+node dev/test-logic.mjs                                # testes da lógica (portas, filtros, eventos…)
 qml6 dev/preview-config.qml -- synthwave /tmp/cfg.png  # página de configuração
 QT_FORCE_STDERR_LOGGING=1 qml6 dev/preview-perf.qml    # conta redesenhos por humor
 python3 dev/check-sprites.py                           # valida as grades das mascotes
@@ -144,16 +165,21 @@ install.sh                  # instalador (local ou via curl | bash)
 package/
   metadata.json
   contents/ui/
-    main.qml                # coleta (docker ps / stats, nvidia-smi), humor e ações
+    main.qml                # coleta (docker ps/stats, nvidia-smi), humor, notificações e ações
+    Logic.js                # lógica pura: portas, filtros/grupos, eventos, bytes (testada)
     Mascot.qml              # sprite em Canvas + glow (MultiEffect) + animações
     Sprites.js              # desenhos das mascotes (papéis de cor)
     Themes.js               # paletas dos temas
     CompactView.qml         # visão do painel
     FullView.qml            # HUD (scanlines, glitch no título)
-    ContainerRow.qml        # linha de container com ações
+    ContainerRow.qml        # linha de container: portas, sparklines, VRAM, favorito, ações
+    StackHeader.qml         # cabeçalho de stack do Compose
+    Sparkline.qml           # mini-gráfico
     ToolTipLite.qml
     configAppearance.qml    # página "Aparência"
     configBehavior.qml      # página "Comportamento"
+  contents/images/
+    cyberdock.png           # ícone das notificações
   contents/config/
     main.xml                # chaves de configuração (KConfigXT)
     config.qml              # páginas do diálogo de configuração

@@ -17,5 +17,14 @@
     <entry name="refreshSeconds" type="Int"><default>3</default><min>1</min><max>60</max></entry>
     <entry name="busyGpu" type="Int"><default>40</default><min>1</min><max>100</max></entry>
     <entry name="busyCpu" type="Int"><default>60</default><min>1</min><max>1000</max></entry>
+    <!-- Notificações -->
+    <entry name="notify" type="Bool"><default>true</default></entry>
+    <entry name="notifyRecovery" type="Bool"><default>true</default></entry>
+    <entry name="notifyDocker" type="Bool"><default>true</default></entry>
+    <!-- HUD (alterados direto pelo popup) -->
+    <entry name="groupStacks" type="Bool"><default>false</default></entry>
+    <entry name="hideStopped" type="Bool"><default>false</default></entry>
+    <entry name="showGraphs" type="Bool"><default>true</default></entry>
+    <entry name="favorites" type="StringList"><default></default></entry>
   </group>
 </kcfg>

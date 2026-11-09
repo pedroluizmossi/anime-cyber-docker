@@ -9,6 +9,9 @@ KCM.SimpleKCM {
     property int cfg_refreshSeconds
     property int cfg_busyGpu
     property int cfg_busyCpu
+    property bool cfg_notify
+    property bool cfg_notifyRecovery
+    property bool cfg_notifyDocker
 
     Kirigami.FormLayout {
         QQC2.SpinBox {
@@ -34,6 +37,32 @@ KCM.SimpleKCM {
         }
         QQC2.Label {
             text: "CPU do Docker é por núcleo: 100% = um núcleo inteiro."
+            font: Kirigami.Theme.smallFont
+            opacity: 0.7
+        }
+
+        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: "Notificações" }
+
+        QQC2.CheckBox {
+            Kirigami.FormData.label: "Avisar quando:"
+            text: "um container cai, entra em loop ou fica unhealthy"
+            checked: page.cfg_notify
+            onToggled: page.cfg_notify = checked
+        }
+        QQC2.CheckBox {
+            text: "um container com problema volta ao normal"
+            enabled: page.cfg_notify
+            checked: page.cfg_notifyRecovery
+            onToggled: page.cfg_notifyRecovery = checked
+        }
+        QQC2.CheckBox {
+            text: "o Docker sai do ar ou volta"
+            enabled: page.cfg_notify
+            checked: page.cfg_notifyDocker
+            onToggled: page.cfg_notifyDocker = checked
+        }
+        QQC2.Label {
+            text: "As notificações de problema têm botões para ver os logs e reiniciar."
             font: Kirigami.Theme.smallFont
             opacity: 0.7
         }
