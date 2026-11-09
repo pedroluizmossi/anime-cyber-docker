@@ -281,17 +281,3 @@ function restartBumps(prev, cur) {
 function cleanLog(text) {
     return (text || "").replace(/\x1b\[[0-9;?]*[A-Za-z]/g, "").replace(/[\x00-\x08\x0b-\x1f\x7f]/g, "")
 }
-
-// Fala da mascote para um evento.
-function eventSpeech(ev) {
-    switch (ev.kind) {
-    case "crash": return `💥 ${ev.name} caiu! (código ${ev.exitCode})`
-    case "restarting": return `🔁 ${ev.name} não para de reiniciar…`
-    case "unhealthy": return `🩺 ${ev.name} está passando mal`
-    case "recovered": return `✨ ${ev.name} voltou!`
-    case "restart-bump": return `↻ ${ev.name} reiniciou sozinho`
-    case "docker-down": return "🔌 cadê o docker?!"
-    case "docker-up": return "✨ docker de volta!"
-    }
-    return ""
-}

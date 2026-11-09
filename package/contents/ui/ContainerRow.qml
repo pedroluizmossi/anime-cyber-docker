@@ -79,7 +79,7 @@ Rectangle {
                         cursorShape: Qt.PointingHandCursor
                         onClicked: rowItem.toggleFavorite()
                     }
-                    ToolTipLite { text: rowItem.favorite ? "desafixar" : "fixar no topo"; shown: favArea.containsMouse; accent: rowItem.theme.visor; background: rowItem.theme.bg0 }
+                    ToolTipLite { text: rowItem.favorite ? i18n("unpin") : i18n("pin to top"); shown: favArea.containsMouse; accent: rowItem.theme.visor; background: rowItem.theme.bg0 }
                 }
                 Text {
                     Layout.fillWidth: true
@@ -115,7 +115,7 @@ Rectangle {
                     }
                     HoverHandler { id: rsHover }
                     ToolTipLite {
-                        text: `reiniciado ${rowItem.restartCount}× pelo Docker` + (rowItem.restartBumped ? " (subiu agora há pouco)" : "")
+                        text: i18n("restarted %1× by Docker", rowItem.restartCount) + (rowItem.restartBumped ? " " + i18n("(went up just now)") : "")
                         shown: rsHover.hovered; accent: rowItem.theme.visor; background: rowItem.theme.bg0
                     }
                 }
@@ -217,8 +217,8 @@ Rectangle {
 
         Repeater {
             model: rowItem.isRunning
-                   ? [{ v: "logs", g: "≡", t: "logs" }, { v: "shell", g: ">_", t: "shell" }, { v: "restart", g: "↻", t: "reiniciar" }, { v: "stop", g: "■", t: "parar" }]
-                   : [{ v: "logs", g: "≡", t: "logs" }, { v: "start", g: "▶", t: "iniciar" }]
+                   ? [{ v: "logs", g: "≡", t: i18n("logs") }, { v: "shell", g: ">_", t: i18n("shell") }, { v: "restart", g: "↻", t: i18n("restart") }, { v: "stop", g: "■", t: i18n("stop") }]
+                   : [{ v: "logs", g: "≡", t: i18n("logs") }, { v: "start", g: "▶", t: i18n("start") }]
             delegate: Rectangle {
                 required property var modelData
                 Layout.alignment: Qt.AlignVCenter

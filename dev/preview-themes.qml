@@ -2,9 +2,15 @@
 import QtQuick
 import "../package/contents/ui"
 import "../package/contents/ui/Themes.js" as Themes
+import "I18nShim.js" as I18n
 
 Window {
     id: win
+    // i18n fora do Plasma (ver dev/I18nShim.js)
+    function i18n(...a) { return I18n.i18n(...a) }
+    function i18nc(...a) { return I18n.i18nc(...a) }
+    function i18np(...a) { return I18n.i18np(...a) }
+    function i18ncp(...a) { return I18n.i18ncp(...a) }
     width: 760; height: col.implicitHeight + 20; visible: true; color: "#000000"
     Column {
         id: col
@@ -18,7 +24,7 @@ Window {
                 width: 740; height: 72; radius: 4
                 gradient: Gradient { GradientStop { position: 0; color: band.th.bg0 } GradientStop { position: 1; color: band.th.bg1 } }
                 border.color: band.th.visor
-                Text { x: 10; anchors.verticalCenter: parent.verticalCenter; width: 150; text: band.th.label; color: band.th.text; font.family: "Hack Nerd Font Mono"; font.pixelSize: 11; wrapMode: Text.Wrap }
+                Text { x: 10; anchors.verticalCenter: parent.verticalCenter; width: 150; text: win.i18n(band.th.label); color: band.th.text; font.family: "Hack Nerd Font Mono"; font.pixelSize: 11; wrapMode: Text.Wrap }
                 Row {
                     x: 170; anchors.verticalCenter: parent.verticalCenter; spacing: 22
                     Repeater {

@@ -84,8 +84,9 @@ PlasmoidItem {
 
     preferredRepresentation: compactRepresentation
     toolTipMainText: "CyberDock"
-    toolTipSubText: !dockerOk ? "Docker indisponível"
-                  : `${runningCount}/${containers.length} rodando` + (problemCount ? ` · ${problemCount} com problema` : "")
+    toolTipSubText: !dockerOk ? i18n("Docker unavailable")
+                  : i18n("%1/%2 running", runningCount, containers.length)
+                    + (problemCount ? " · " + i18np("%1 with problems", "%1 with problems", problemCount) : "")
 
     compactRepresentation: CompactView {
         mood: root.mood
@@ -217,21 +218,21 @@ PlasmoidItem {
         if (source.startsWith(logsPrefix)) {
             const name = source.slice(logsPrefix.length).split(" ")[0]
             const lp = Object.assign({}, logsPeek)
-            lp[name] = { text: Logic.cleanLog(out) || "(sem logs)", at: Date.now() }
+            lp[name] = { text: Logic.cleanLog(out) || i18n("(no logs)"), at: Date.now() }
             logsPeek = lp
             return
         }
         if (source === psCmd) {
             const wasOk = dockerOk
             dockerOk = ok
-            errorText = ok ? "" : ((data["stderr"] || out).trim().split("\n")[0] || "docker não respondeu")
+            errorText = ok ? "" : ((data["stderr"] || out).trim().split("\n")[0] || i18n("docker did not respond"))
             if (ok) parseContainers(out)
             if (ok && !dockerVersion) exec.run(versionCmd)
             if (!ok) dockerVersion = ""
             if (baselineReady && wasOk !== ok) react({ kind: ok ? "docker-up" : "docker-down", name: "" })
             if (baselineReady && cfg.notify && cfg.notifyDocker && wasOk !== ok)
-                notify(ok ? "docker-up" : "docker-down", "", ok ? "Docker voltou" : "Docker fora do ar",
-                       ok ? "O daemon do Docker está respondendo de novo." : errorText, !ok)
+                notify(ok ? "docker-up" : "docker-down", "", ok ? i18n("Docker is back") : i18n("Docker is down"),
+                       ok ? i18n("The Docker daemon is responding again.") : errorText, !ok)
             lastUpdate = new Date()
         } else if (source === statsCmd) {
             if (!ok) return
@@ -281,7 +282,7 @@ PlasmoidItem {
         } else if (source === diskCmd) {
             if (ok) disk = Logic.parseDisk(out)
         } else if (source === pruneCmd) {
-            pruneResult = out.split("\n").filter(l => /reclaimed/i.test(l)).map(l => l.replace(/^Total reclaimed space:\s*/i, "")).join(" + ") || "nada para limpar"
+            pruneResult = out.split("\n").filter(l => /reclaimed/i.test(l)).map(l => l.replace(/^Total reclaimed space:\s*/i, "")).join(" + ") || i18n("nothing to clean")
             exec.run(diskCmd)
         } else if (source === restartsCmd) {
             if (!ok) return
@@ -376,10 +377,10 @@ PlasmoidItem {
     // notificações e descarta as que ele mesmo emite via KNotification.
     function notifyEvent(ev) {
         const texts = {
-            crash: ["💥 " + ev.name + " caiu", `O container saiu com código ${ev.exitCode}.`, true],
-            restarting: ["🔁 " + ev.name + " em loop de reinício", "O container está reiniciando sem parar.", true],
-            unhealthy: ["🩺 " + ev.name + " unhealthy", "O healthcheck do container está falhando.", true],
-            recovered: ["✅ " + ev.name + " voltou", "O container está rodando normalmente de novo.", false]
+            crash: ["💥 " + i18n("%1 crashed", ev.name), i18n("The container exited with code %1.", ev.exitCode), true],
+            restarting: ["🔁 " + i18n("%1 is in a restart loop", ev.name), i18n("The container keeps restarting."), true],
+            unhealthy: ["🩺 " + i18n("%1 is unhealthy", ev.name), i18n("The container healthcheck is failing."), true],
+            recovered: ["✅ " + i18n("%1 is back", ev.name), i18n("The container is running normally again."), false]
         }
         if (ev.kind === "recovered" && !cfg.notifyRecovery) return
         const t = texts[ev.kind]
@@ -388,7 +389,7 @@ PlasmoidItem {
 
     readonly property string notifyIcon: decodeURIComponent(Qt.resolvedUrl("../images/cyberdock.png").toString().replace(/^file:\/\//, ""))
 
-    function shellQuote(t) { return "'" + String(t).replace(/'/g, "’") + "'" }
+    function shellQuote(t) { return "'" + String(t).split("'").join("’") + "'" }
 
     function notify(kind, target, title, text, urgent) {
         const key = kind + ":" + target
@@ -403,7 +404,7 @@ PlasmoidItem {
             + " -u " + (urgent ? "normal" : "low")
             + " -h string:x-cyberdock-id:" + now                       // torna cada comando único
         if (!urgent) cmd += " -t 8000"
-        if (withActions) cmd += " -A logs='Ver logs' -A restart='Reiniciar'"
+        if (withActions) cmd += " -A logs=" + shellQuote(i18n("View logs")) + " -A restart=" + shellQuote(i18n("Restart"))
         cmd += " " + shellQuote(title) + " " + shellQuote(text) + "; true"
         if (withActions) {
             const p = Object.assign({}, pendingNotifications)
@@ -452,7 +453,7 @@ PlasmoidItem {
     }
 
     function prune() {
-        pruneResult = "limpando…"
+        pruneResult = i18n("cleaning…")
         exec.run(pruneCmd)
     }
 

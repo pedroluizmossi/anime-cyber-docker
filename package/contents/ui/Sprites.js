@@ -1,5 +1,9 @@
 .pragma library
 
+// Marca um texto para tradução sem traduzir aqui (bibliotecas JS não enxergam o i18n do
+// Plasma): o QML chama i18n(label) na hora de exibir. Extraído por dev/i18n.sh.
+function N_(s) { return s }
+
 // Todas as mascotes são 16 colunas × 14 linhas, um caractere por pixel.
 // Os caracteres são PAPÉIS de cor; o tema decide a cor real (ver Mascot.qml):
 //   .  transparente        K  contorno            P  cor principal (pelo/corpo)
@@ -15,7 +19,7 @@
 
 const sprites = {
     neko: {
-        label: "Neko cyborg",
+        label: N_("Cyborg Neko"),
         eyeBg: "C",
         shadeFrom: 11,
         grid: [
@@ -36,7 +40,7 @@ const sprites = {
         ]
     },
     robo: {
-        label: "Robô Unit-7",
+        label: N_("Unit-7 Robot"),
         eyeBg: "C",
         grid: [
             "......KAK.......",
@@ -56,7 +60,7 @@ const sprites = {
         ]
     },
     kitsune: {
-        label: "Kitsune (raposa)",
+        label: N_("Kitsune (fox)"),
         eyeBg: "C",
         grid: [
             "K..............K",
@@ -76,7 +80,7 @@ const sprites = {
         ]
     },
     usagi: {
-        label: "Usagi (coelha)",
+        label: N_("Usagi (bunny)"),
         eyeBg: "C",
         grid: [
             "...KKK....KKK...",
@@ -96,7 +100,7 @@ const sprites = {
         ]
     },
     yurei: {
-        label: "Yūrei (fantasma)",
+        label: N_("Yūrei (ghost)"),
         eyeBg: "P",
         grid: [
             ".....KKKKKK.....",
@@ -116,7 +120,7 @@ const sprites = {
         ]
     },
     hacker: {
-        label: "Hacker-chan",
+        label: N_("Hacker-chan"),
         eyeBg: "F",
         grid: [
             "....KKKKKKKK....",
@@ -136,7 +140,7 @@ const sprites = {
         ]
     },
     sapo: {
-        label: "Sapo",
+        label: N_("Frog"),
         vital: "ram",
         eyeBg: "M",
         colors: { fur: "#3ddc54", ear: "#d8ffb0" },
@@ -158,7 +162,7 @@ const sprites = {
         ]
     },
     chip: {
-        label: "Microprocessador",
+        label: N_("Microprocessor"),
         vital: "cpu",
         eyeBg: "C",
         colors: { fur: "#8a93a6" },
@@ -180,7 +184,7 @@ const sprites = {
         ]
     },
     nvidia: {
-        label: "GPU NVIDIA",
+        label: N_("NVIDIA GPU"),
         vital: "gpu",
         eyeBg: "C",
         colors: { fur: "#76b900", ear: "#ffcc33" },
@@ -202,7 +206,7 @@ const sprites = {
         ]
     },
     amd: {
-        label: "GPU AMD",
+        label: N_("AMD GPU"),
         vital: "gpu",
         eyeBg: "C",
         colors: { fur: "#ed1c24", ear: "#ffcc33" },
@@ -224,7 +228,7 @@ const sprites = {
         ]
     },
     disquete: {
-        label: "Disquete",
+        label: N_("Floppy disk"),
         vital: "disk",
         eyeBg: "M",
         grid: [

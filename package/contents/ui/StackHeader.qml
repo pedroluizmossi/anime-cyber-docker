@@ -41,7 +41,7 @@ Rectangle {
         }
         Text {
             Layout.fillWidth: true
-            text: header.standalone ? "// sem stack" : header.group.project
+            text: header.standalone ? i18n("// no stack") : header.group.project
             color: header.standalone ? header.theme.sub : header.theme.text
             font.family: "Hack Nerd Font Mono"; font.pixelSize: 12; font.bold: !header.standalone
             font.letterSpacing: 1
@@ -55,9 +55,9 @@ Rectangle {
 
         Repeater {
             model: header.standalone ? [] : [
-                { v: "start", g: "▶", t: "iniciar stack" },
-                { v: "restart", g: "↻", t: "reiniciar stack" },
-                { v: "stop", g: "■", t: "parar stack" }
+                { v: "start", g: "▶", t: i18n("start stack") },
+                { v: "restart", g: "↻", t: i18n("restart stack") },
+                { v: "stop", g: "■", t: i18n("stop stack") }
             ]
             delegate: Rectangle {
                 required property var modelData

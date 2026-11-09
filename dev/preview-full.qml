@@ -1,9 +1,15 @@
 // Renderiza o popup com dados falsos e salva PNG. Uso: qml dev/preview-full.qml -- <mood> saida.png
 import QtQuick
 import "../package/contents/ui"
+import "I18nShim.js" as I18n
 
 Window {
     id: win
+    // i18n fora do Plasma (ver dev/I18nShim.js)
+    function i18n(...a) { return I18n.i18n(...a) }
+    function i18nc(...a) { return I18n.i18nc(...a) }
+    function i18np(...a) { return I18n.i18np(...a) }
+    function i18ncp(...a) { return I18n.i18ncp(...a) }
     width: 900; height: 580; visible: true; color: "#000000"
     readonly property var args: Qt.application.arguments
     readonly property string moodArg: args[args.length - 2]

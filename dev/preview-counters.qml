@@ -4,9 +4,15 @@ import QtQuick
 import QtQuick.Layouts
 import "../package/contents/ui"
 import "../package/contents/ui/Themes.js" as Themes
+import "I18nShim.js" as I18n
 
 Window {
     id: win
+    // i18n fora do Plasma (ver dev/I18nShim.js)
+    function i18n(...a) { return I18n.i18n(...a) }
+    function i18nc(...a) { return I18n.i18nc(...a) }
+    function i18np(...a) { return I18n.i18np(...a) }
+    function i18ncp(...a) { return I18n.i18ncp(...a) }
     readonly property var args: Qt.application.arguments
     readonly property var th: Themes.get("neon")
     readonly property string outPath: args[args.length - 1]

@@ -4,7 +4,7 @@ import assert from "node:assert/strict"
 
 const src = readFileSync(new URL("../package/contents/ui/Logic.js", import.meta.url), "utf8")
     .replace(/^\.pragma library\s*$/m, "")
-const L = new Function(src + "\nreturn { parseHost, cpuPercent, parsePorts, parseBytes, formatBytes, formatMiB, pushHistory, buildRows, detectEvents, snapshot, validContainerName, validProjectName, vitalMood, pushSample, parseGpu, gpuMascot, tempMood, worstMood, netRate, parseDisk, parseRestarts, restartBumps, cleanLog, eventSpeech }")()
+const L = new Function(src + "\nreturn { parseHost, cpuPercent, parsePorts, parseBytes, formatBytes, formatMiB, pushHistory, buildRows, detectEvents, snapshot, validContainerName, validProjectName, vitalMood, pushSample, parseGpu, gpuMascot, tempMood, worstMood, netRate, parseDisk, parseRestarts, restartBumps, cleanLog }")()
 
 let n = 0
 const test = (name, fn) => { fn(); n++; console.log("ok -", name) }
@@ -162,9 +162,8 @@ test("parseRestarts / restartBumps", () => {
     assert.deepEqual(L.restartBumps({ "shop-api-1": 6, "llama-swap": 0 }, r), ["shop-api-1"])
     assert.deepEqual(L.restartBumps({}, r), [])                       // 1ª leitura não conta
 })
-test("cleanLog tira ANSI e controle; eventSpeech", () => {
+test("cleanLog tira ANSI e controle", () => {
     assert.equal(L.cleanLog("\x1b[32mINFO\x1b[0m ok\r\nnext\x07"), "INFO ok\nnext")
-    assert.equal(L.eventSpeech({ kind: "recovered", name: "db" }), "✨ db voltou!")
 })
 
 console.log(`\n${n} testes passaram`)

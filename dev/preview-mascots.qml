@@ -3,9 +3,15 @@ import QtQuick
 import "../package/contents/ui"
 import "../package/contents/ui/Themes.js" as Themes
 import "../package/contents/ui/Sprites.js" as Sprites
+import "I18nShim.js" as I18n
 
 Window {
     id: win
+    // i18n fora do Plasma (ver dev/I18nShim.js)
+    function i18n(...a) { return I18n.i18n(...a) }
+    function i18nc(...a) { return I18n.i18nc(...a) }
+    function i18np(...a) { return I18n.i18np(...a) }
+    function i18ncp(...a) { return I18n.i18ncp(...a) }
     readonly property var args: Qt.application.arguments
     readonly property var th: Themes.get(args[args.length - 2])
     width: 700; height: col.implicitHeight + 20; visible: true; color: th.bg1
@@ -20,7 +26,7 @@ Window {
                 width: 680; height: 72; radius: 4
                 gradient: Gradient { GradientStop { position: 0; color: win.th.bg0 } GradientStop { position: 1; color: win.th.bg1 } }
                 border.color: Qt.rgba(win.th.visor.r, win.th.visor.g, win.th.visor.b, 0.4)
-                Text { x: 10; anchors.verticalCenter: parent.verticalCenter; width: 130; text: band.modelData.label; color: win.th.text; font.family: "Hack Nerd Font Mono"; font.pixelSize: 11; wrapMode: Text.Wrap }
+                Text { x: 10; anchors.verticalCenter: parent.verticalCenter; width: 130; text: win.i18n(band.modelData.label); color: win.th.text; font.family: "Hack Nerd Font Mono"; font.pixelSize: 11; wrapMode: Text.Wrap }
                 Row {
                     x: 150; anchors.verticalCenter: parent.verticalCenter; spacing: 22
                     Repeater {

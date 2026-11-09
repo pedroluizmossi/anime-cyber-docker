@@ -35,7 +35,8 @@ KCM.SimpleKCM {
         property int glow: 75
         property bool anim: true
         signal picked(string key)
-        readonly property var options: (allowAuto ? [{ key: "auto", label: "Automático (NVIDIA / AMD)" }] : []).concat(Sprites.list())
+        readonly property var options: (allowAuto ? [{ key: "auto", label: i18n("Automatic (NVIDIA / AMD)") }] : [])
+            .concat(Sprites.list().map(o => ({ key: o.key, label: i18n(o.label) })))   // rótulos marcados com N_() em Sprites.js
         // na prévia, "auto" mostra a placa NVIDIA
         readonly property string shownKind: value === "auto" || !value ? "nvidia" : value
         spacing: Kirigami.Units.smallSpacing
@@ -67,7 +68,7 @@ KCM.SimpleKCM {
 
         // prévia ao vivo
         Rectangle {
-            Kirigami.FormData.label: "Prévia:"
+            Kirigami.FormData.label: i18n("Preview:")
             implicitWidth: previewRow.implicitWidth + 24
             implicitHeight: previewRow.implicitHeight + 24
             radius: 4
@@ -106,7 +107,7 @@ KCM.SimpleKCM {
         // galeria de mascotes: clique para escolher
         Flow {
             id: gallery
-            Kirigami.FormData.label: "Mascote:"
+            Kirigami.FormData.label: i18n("Mascot:")
             // os delegates leem estes valores via parent: referenciar "page" direto falha
             // no 1º delegate criado (id ainda indisponível) e o binding nunca reavalia
             property var galleryTheme: page.previewTheme
@@ -116,7 +117,7 @@ KCM.SimpleKCM {
             Layout.preferredWidth: Kirigami.Units.gridUnit * 26
             spacing: 6
             Repeater {
-                model: Sprites.list()
+                model: Sprites.list().map(o => ({ key: o.key, label: i18n(o.label), vital: o.vital }))
                 delegate: Rectangle {
                     id: tile
                     // propriedades próprias (não "required") para o binding de seleção reagir certo
@@ -162,8 +163,8 @@ KCM.SimpleKCM {
 
         QQC2.ComboBox {
             id: themeBox
-            Kirigami.FormData.label: "Tema:"
-            model: Themes.list()
+            Kirigami.FormData.label: i18n("Theme:")
+            model: Themes.list().map(o => ({ key: o.key, label: i18n(o.label) }))   // rótulos marcados com N_() em Themes.js
             textRole: "label"
             valueRole: "key"
             // depende de count: reavalia quando o modelo fica pronto
@@ -172,13 +173,13 @@ KCM.SimpleKCM {
         }
 
         KQControls.ColorButton {
-            Kirigami.FormData.label: "Cor do pelo:"
+            Kirigami.FormData.label: i18n("Fur color:")
             visible: page.cfg_theme === "custom"
             color: page.cfg_customFur
             onAccepted: color => page.cfg_customFur = color.toString()
         }
         KQControls.ColorButton {
-            Kirigami.FormData.label: "Cor do visor:"
+            Kirigami.FormData.label: i18n("Visor color:")
             visible: page.cfg_theme === "custom"
             color: page.cfg_customVisor
             onAccepted: color => page.cfg_customVisor = color.toString()
@@ -187,7 +188,7 @@ KCM.SimpleKCM {
         Item { Kirigami.FormData.isSection: true }
 
         RowLayout {
-            Kirigami.FormData.label: "Tamanho do ícone:"
+            Kirigami.FormData.label: i18n("Icon size:")
             QQC2.Slider {
                 id: scaleSlider
                 from: 50; to: 100; stepSize: 5
@@ -195,23 +196,23 @@ KCM.SimpleKCM {
                 onMoved: page.cfg_iconScale = value
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 10
             }
-            QQC2.Label { text: page.cfg_iconScale + "% da altura do painel" }
+            QQC2.Label { text: i18n("%1% of the panel height", page.cfg_iconScale) }
         }
 
         RowLayout {
-            Kirigami.FormData.label: "Intensidade do glow:"
+            Kirigami.FormData.label: i18n("Glow intensity:")
             QQC2.Slider {
                 from: 0; to: 100; stepSize: 5
                 value: page.cfg_glowLevel
                 onMoved: page.cfg_glowLevel = value
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 10
             }
-            QQC2.Label { text: page.cfg_glowLevel === 0 ? "desligado" : page.cfg_glowLevel + "%" }
+            QQC2.Label { text: page.cfg_glowLevel === 0 ? i18n("off") : page.cfg_glowLevel + "%" }
         }
 
         Item {
             Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: "Sinais vitais (coluna do HUD)"
+            Kirigami.FormData.label: i18n("Vital signs (HUD column)")
         }
         VitalPicker {
             Kirigami.FormData.label: "CPU:"
@@ -233,7 +234,7 @@ KCM.SimpleKCM {
             onPicked: key => page.cfg_gpuMascot = key
         }
         VitalPicker {
-            Kirigami.FormData.label: "Disco / rede:"
+            Kirigami.FormData.label: i18n("Disk / network:")
             value: page.cfg_diskMascot || "disquete"
             theme: page.previewTheme; glow: page.cfg_glowLevel; anim: page.cfg_animations
             onPicked: key => page.cfg_diskMascot = key
@@ -242,13 +243,13 @@ KCM.SimpleKCM {
         Item { Kirigami.FormData.isSection: true }
 
         QQC2.CheckBox {
-            Kirigami.FormData.label: "Painel:"
-            text: "Mostrar contador (rodando/total)"
+            Kirigami.FormData.label: i18n("Panel:")
+            text: i18n("Show counter (running/total)")
             checked: page.cfg_showCounter
             onToggled: page.cfg_showCounter = checked
         }
         QQC2.CheckBox {
-            text: "Animações (desligue para reduzir movimento)"
+            text: i18n("Animations (turn off to reduce motion)")
             checked: page.cfg_animations
             onToggled: page.cfg_animations = checked
         }

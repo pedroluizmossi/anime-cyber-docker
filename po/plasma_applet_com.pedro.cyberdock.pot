@@ -1,0 +1,560 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the cyberdock package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cyberdock\n"
+"Report-Msgid-Bugs-To: https://github.com/pedroluizmossi/anime-cyber-docker/"
+"issues\n"
+"POT-Creation-Date: 2026-11-09 02:57-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: package/contents/config/config.qml:6
+msgid "Appearance"
+msgstr ""
+
+#: package/contents/config/config.qml:11
+msgid "Behavior"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:38
+msgid "Automatic (NVIDIA / AMD)"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:71
+msgid "Preview:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:110
+msgid "Mascot:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:166
+msgid "Theme:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:176
+msgid "Fur color:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:182
+msgid "Visor color:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:191
+msgid "Icon size:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:199
+msgid "%1% of the panel height"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:203
+msgid "Glow intensity:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:210
+msgid "off"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:215
+msgid "Vital signs (HUD column)"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:237
+msgid "Disk / network:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:246
+msgid "Panel:"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:247
+msgid "Show counter (running/total)"
+msgstr ""
+
+#: package/contents/ui/configAppearance.qml:252
+msgid "Animations (turn off to reduce motion)"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:21
+msgid "Refresh every (s):"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:27
+msgid "⚡ busy mode when…"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:30
+msgid "GPU usage ≥ (%):"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:36
+msgid "CPU of one container ≥ (%):"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:42
+msgid "Docker CPU is per core: 100% = one whole core."
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:47
+msgid "Temperature (CPU and GPU)"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:50
+msgid "Sensors:"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:51
+msgid "show temperature in the vital signs"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:56
+msgid "Hot from (°C):"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:66
+msgid "Critical from (°C):"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:76
+msgid ""
+"Hot: the mascot sweats, steams and jumps. Critical: it goes into alarm.\n"
+"CPU read from hwmon (coretemp / k10temp / zenpower); GPU from nvidia-smi or "
+"amdgpu."
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:81
+msgid "Notifications"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:84
+msgid "Notify when:"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:85
+msgid "a container crashes, loops or becomes unhealthy"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:90
+msgid "a container with problems is back to normal"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:96
+msgid "Docker goes down or comes back"
+msgstr ""
+
+#: package/contents/ui/configBehavior.qml:102
+msgid "Problem notifications have buttons to view the logs and restart."
+msgstr ""
+
+#: package/contents/ui/ContainerList.qml:77
+msgid "// nothing matches the filter"
+msgstr ""
+
+#: package/contents/ui/ContainerList.qml:77
+msgid "// no containers"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:82
+msgid "unpin"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:82
+msgid "pin to top"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:118
+msgid "restarted %1× by Docker"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:118
+msgid "(went up just now)"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:220
+#: package/contents/ui/ContainerRow.qml:221
+msgid "logs"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:220
+msgid "shell"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:220
+msgid "restart"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:220
+msgid "stop"
+msgstr ""
+
+#: package/contents/ui/ContainerRow.qml:221
+msgid "start"
+msgstr ""
+
+#: package/contents/ui/HudFooter.qml:28 package/contents/ui/HudHeader.qml:18
+msgid "docker offline"
+msgstr ""
+
+#: package/contents/ui/HudFooter.qml:29
+msgid "sync now"
+msgstr ""
+
+#: package/contents/ui/HudFooter.qml:29
+#, c-format
+msgid "sync %1s ago"
+msgstr ""
+
+#: package/contents/ui/HudFooter.qml:30
+msgid "%1 hidden"
+msgid_plural "%1 hidden"
+msgstr[0] ""
+msgstr[1] ""
+
+#: package/contents/ui/HudFooter.qml:35
+msgid "refresh"
+msgstr ""
+
+#: package/contents/ui/HudHeader.qml:14
+msgid "no active containers... zzz"
+msgstr ""
+
+#: package/contents/ui/HudHeader.qml:15
+msgid "high load on the neural net"
+msgstr ""
+
+#: package/contents/ui/HudHeader.qml:16
+msgid "everything back to normal"
+msgstr ""
+
+#: package/contents/ui/HudHeader.qml:17
+msgid "%1 container with problems"
+msgid_plural "%1 containers with problems"
+msgstr[0] ""
+msgstr[1] ""
+
+#: package/contents/ui/HudHeader.qml:20
+msgid "all systems online"
+msgstr ""
+
+#: package/contents/ui/LogPeek.qml:10
+msgid "loading…"
+msgstr ""
+
+#: package/contents/ui/LogPeek.qml:31
+msgid "// logs · %1  (click to open)"
+msgstr ""
+
+#: package/contents/ui/main.qml:87
+msgid "Docker unavailable"
+msgstr ""
+
+#: package/contents/ui/main.qml:88
+msgid "%1/%2 running"
+msgstr ""
+
+#: package/contents/ui/main.qml:89
+msgid "%1 with problems"
+msgid_plural "%1 with problems"
+msgstr[0] ""
+msgstr[1] ""
+
+#: package/contents/ui/main.qml:221
+msgid "(no logs)"
+msgstr ""
+
+#: package/contents/ui/main.qml:228
+msgid "docker did not respond"
+msgstr ""
+
+#: package/contents/ui/main.qml:234
+msgid "Docker is back"
+msgstr ""
+
+#: package/contents/ui/main.qml:234
+msgid "Docker is down"
+msgstr ""
+
+#: package/contents/ui/main.qml:235
+msgid "The Docker daemon is responding again."
+msgstr ""
+
+#: package/contents/ui/main.qml:285
+msgid "nothing to clean"
+msgstr ""
+
+#: package/contents/ui/main.qml:380
+msgid "%1 crashed"
+msgstr ""
+
+#: package/contents/ui/main.qml:380
+msgid "The container exited with code %1."
+msgstr ""
+
+#: package/contents/ui/main.qml:381
+msgid "%1 is in a restart loop"
+msgstr ""
+
+#: package/contents/ui/main.qml:381
+msgid "The container keeps restarting."
+msgstr ""
+
+#: package/contents/ui/main.qml:382
+msgid "%1 is unhealthy"
+msgstr ""
+
+#: package/contents/ui/main.qml:382
+msgid "The container healthcheck is failing."
+msgstr ""
+
+#: package/contents/ui/main.qml:383
+msgid "%1 is back"
+msgstr ""
+
+#: package/contents/ui/main.qml:383
+msgid "The container is running normally again."
+msgstr ""
+
+#: package/contents/ui/main.qml:407
+msgid "View logs"
+msgstr ""
+
+#: package/contents/ui/main.qml:407
+msgid "Restart"
+msgstr ""
+
+#: package/contents/ui/main.qml:456
+msgid "cleaning…"
+msgstr ""
+
+#: package/contents/ui/SearchBar.qml:39
+msgid "filter by name, image or stack…"
+msgstr ""
+
+#: package/contents/ui/SearchBar.qml:58
+msgid "hide stopped"
+msgstr ""
+
+#: package/contents/ui/SearchBar.qml:59
+msgid "group by stack"
+msgstr ""
+
+#: package/contents/ui/SearchBar.qml:60
+msgid "cpu/mem graphs"
+msgstr ""
+
+#: package/contents/ui/SearchBar.qml:61
+msgid "vital signs column"
+msgstr ""
+
+#: package/contents/ui/SpeechBubble.qml:17
+msgid "%1 crashed! (exit code %2)"
+msgstr ""
+
+#: package/contents/ui/SpeechBubble.qml:18
+msgid "%1 keeps restarting…"
+msgstr ""
+
+#: package/contents/ui/SpeechBubble.qml:19
+msgid "%1 is not feeling well"
+msgstr ""
+
+#: package/contents/ui/SpeechBubble.qml:20
+msgid "%1 is back!"
+msgstr ""
+
+#: package/contents/ui/SpeechBubble.qml:21
+msgid "%1 restarted on its own"
+msgstr ""
+
+#: package/contents/ui/SpeechBubble.qml:22
+msgid "where did docker go?!"
+msgstr ""
+
+#: package/contents/ui/SpeechBubble.qml:23
+msgid "docker is back!"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:22
+msgid "Cyborg Neko"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:43
+msgid "Unit-7 Robot"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:63
+msgid "Kitsune (fox)"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:83
+msgid "Usagi (bunny)"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:103
+msgid "Yūrei (ghost)"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:123
+msgid "Hacker-chan"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:143
+msgid "Frog"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:165
+msgid "Microprocessor"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:187
+msgid "NVIDIA GPU"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:209
+msgid "AMD GPU"
+msgstr ""
+
+#: package/contents/ui/Sprites.js:231
+msgid "Floppy disk"
+msgstr ""
+
+#: package/contents/ui/StackHeader.qml:44
+msgid "// no stack"
+msgstr ""
+
+#: package/contents/ui/StackHeader.qml:58
+msgid "start stack"
+msgstr ""
+
+#: package/contents/ui/StackHeader.qml:59
+msgid "restart stack"
+msgstr ""
+
+#: package/contents/ui/StackHeader.qml:60
+msgid "stop stack"
+msgstr ""
+
+#: package/contents/ui/StatsBar.qml:16
+msgctxt "counter label: running containers"
+msgid "RUN"
+msgstr ""
+
+#: package/contents/ui/StatsBar.qml:17
+msgctxt "counter label: stopped containers"
+msgid "STOP"
+msgstr ""
+
+#: package/contents/ui/StatsBar.qml:18
+msgctxt "counter label: containers with errors"
+msgid "ERR"
+msgstr ""
+
+#: package/contents/ui/StatsBar.qml:25 package/contents/ui/VitalsColumn.qml:63
+msgid "computer %1%  ·  docker %2% (100% = 1 core)"
+msgstr ""
+
+#: package/contents/ui/StatsBar.qml:29
+msgid "computer %1 of %2  ·  docker %3"
+msgstr ""
+
+#: package/contents/ui/StatsBar.qml:32
+msgid "usage %1%  ·  VRAM %2 of %3"
+msgstr ""
+
+#: package/contents/ui/Themes.js:12
+msgid "Neon (magenta / cyan)"
+msgstr ""
+
+#: package/contents/ui/Themes.js:18
+msgid "Matrix (terminal green)"
+msgstr ""
+
+#: package/contents/ui/Themes.js:24
+msgid "Synthwave (purple / orange)"
+msgstr ""
+
+#: package/contents/ui/Themes.js:30
+msgid "Vaporwave (pastel)"
+msgstr ""
+
+#: package/contents/ui/Themes.js:36
+msgid "Akira (red / white)"
+msgstr ""
+
+#: package/contents/ui/Themes.js:42
+msgid "Ghost (ice blue)"
+msgstr ""
+
+#: package/contents/ui/Themes.js:48
+msgid "Custom"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:58
+msgctxt "short bar label: cpu usage"
+msgid "use"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:64
+msgid "heaviest: %1 %2%"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:80
+msgid "bar: Docker's share highlighted, the rest is the computer"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:100
+msgid "no NVIDIA/AMD GPU"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:102
+msgid "usage %1%  ·  VRAM %2 of %3  ·  docker %4"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:103
+msgid "no nvidia-smi and no amdgpu card"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:115
+msgctxt "vital card title"
+msgid "DISK · NET"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:119
+msgctxt "short bar label"
+msgid "disk"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:130
+msgctxt "short label: network"
+msgid "net"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:156
+msgid "%1 reclaimable"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:174
+msgid "confirm?"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:174
+msgid "clean up"
+msgstr ""
+
+#: package/contents/ui/VitalsColumn.qml:190
+msgid ""
+"removes images without containers and the build cache\n"
+"(they will have to be downloaded again)"
+msgstr ""

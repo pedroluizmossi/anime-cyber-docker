@@ -184,7 +184,17 @@ qml6 dev/preview-config.qml -- synthwave /tmp/cfg.png  # página de configuraç�
 QT_FORCE_STDERR_LOGGING=1 qml6 dev/preview-perf.qml    # conta redesenhos por humor
 python3 dev/check-sprites.py                           # valida as grades das mascotes
 dev/make-docs.sh                                       # regera as imagens deste README
+dev/i18n.sh                                            # extrai textos, atualiza po/*.po e compila as traduções
+LANG=en_US.UTF-8 qml6 dev/preview-vitals.qml -- neon busy /tmp/v.png   # previews em inglês
 ```
+
+### Traduções
+
+A interface segue o idioma do KDE: **inglês** (textos-fonte) e **português do Brasil**. Os textos
+são marcados com `i18n()` no QML (e `N_()` nas bibliotecas JS); depois de mexer neles rode
+`dev/i18n.sh`, preencha o que faltar em `po/pt_BR.po` e rode de novo — `dev/i18n.sh --check` falha
+se sobrar mensagem sem tradução. Para um idioma novo: `msginit -l <idioma> -i po/*.pot -o po/<idioma>.po`.
+Fora do Plasma (previews de `dev/`), um shim (`dev/I18nShim.js`) usa o mesmo `.po`.
 
 <details>
 <summary>Estrutura do projeto</summary>
@@ -194,13 +204,24 @@ install.sh                  # instalador (local ou via curl | bash)
 package/
   metadata.json
   contents/ui/
-    main.qml                # coleta (docker ps/stats, nvidia-smi), humor, notificações e ações
-    Logic.js                # lógica pura: portas, filtros/grupos, eventos, bytes (testada)
+    main.qml                # coleta (docker, GPU, sensores, rede, disco), humor, eventos, notificações e ações
+    Logic.js                # lógica pura: portas, filtros/grupos, eventos, parsers (testada)
     Mascot.qml              # sprite em Canvas + glow (MultiEffect) + animações
     Sprites.js              # desenhos das mascotes (papéis de cor)
     Themes.js               # paletas dos temas
     CompactView.qml         # visão do painel
-    FullView.qml            # HUD (scanlines, glitch no título)
+    FullView.qml            # HUD: estado + layout; as partes abaixo recebem `hud` e leem dele
+      HudBackground.qml     #   gradiente, fundo do tema, scanlines
+      HudHeader.qml         #   mascote principal, título com glitch, humor
+      StatsBar.qml          #   contadores RUN/STOP/ERR (CounterTile.qml)
+      SearchBar.qml         #   busca + filtros
+      ContainerList.qml     #   lista + horizonte (Skyline.qml)
+      VitalsColumn.qml      #   cartões de sinais vitais (VitalCard.qml)
+      HudFooter.qml         #   versão do Docker, sync, refresh
+      SpeechBubble.qml      #   balão de fala da mascote
+      LogPeek.qml           #   prévia de logs
+      BootCurtain.qml       #   varredura de CRT na abertura
+    ThemeBackdrop.qml       # fundo animado por tema
     ContainerRow.qml        # linha de container: portas, sparklines, VRAM, favorito, ações
     StackHeader.qml         # cabeçalho de stack do Compose
     Sparkline.qml           # mini-gráfico
@@ -209,10 +230,12 @@ package/
     configBehavior.qml      # página "Comportamento"
   contents/images/
     cyberdock.png           # ícone das notificações
+  contents/locale/          # traduções compiladas (.mo), geradas por dev/i18n.sh
   contents/config/
     main.xml                # chaves de configuração (KConfigXT)
     config.qml              # páginas do diálogo de configuração
-dev/                        # previews, validação e gerador das imagens
+po/                         # template (.pot) e traduções (.po) — edite po/<idioma>.po
+dev/                        # previews, validação, gerador das imagens e das traduções
 docs/img/                   # imagens do README
 ```
 

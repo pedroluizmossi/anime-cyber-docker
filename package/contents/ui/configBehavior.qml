@@ -18,42 +18,42 @@ KCM.SimpleKCM {
 
     Kirigami.FormLayout {
         QQC2.SpinBox {
-            Kirigami.FormData.label: "Atualizar a cada (s):"
+            Kirigami.FormData.label: i18n("Refresh every (s):")
             from: 1; to: 60
             value: page.cfg_refreshSeconds
             onValueModified: page.cfg_refreshSeconds = value
         }
 
-        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: "Modo ⚡ busy quando…" }
+        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("⚡ busy mode when…") }
 
         QQC2.SpinBox {
-            Kirigami.FormData.label: "Uso da GPU ≥ (%):"
+            Kirigami.FormData.label: i18n("GPU usage ≥ (%):")
             from: 1; to: 100
             value: page.cfg_busyGpu
             onValueModified: page.cfg_busyGpu = value
         }
         QQC2.SpinBox {
-            Kirigami.FormData.label: "CPU de um container ≥ (%):"
+            Kirigami.FormData.label: i18n("CPU of one container ≥ (%):")
             from: 1; to: 1000
             value: page.cfg_busyCpu
             onValueModified: page.cfg_busyCpu = value
         }
         QQC2.Label {
-            text: "CPU do Docker é por núcleo: 100% = um núcleo inteiro."
+            text: i18n("Docker CPU is per core: 100% = one whole core.")
             font: Kirigami.Theme.smallFont
             opacity: 0.7
         }
 
-        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: "Temperatura (CPU e GPU)" }
+        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("Temperature (CPU and GPU)") }
 
         QQC2.CheckBox {
-            Kirigami.FormData.label: "Sensores:"
-            text: "mostrar temperatura nos sinais vitais"
+            Kirigami.FormData.label: i18n("Sensors:")
+            text: i18n("show temperature in the vital signs")
             checked: page.cfg_showTemps
             onToggled: page.cfg_showTemps = checked
         }
         QQC2.SpinBox {
-            Kirigami.FormData.label: "Quente a partir de (°C):"
+            Kirigami.FormData.label: i18n("Hot from (°C):")
             enabled: page.cfg_showTemps
             from: 30; to: 120
             value: page.cfg_tempHot
@@ -63,7 +63,7 @@ KCM.SimpleKCM {
             }
         }
         QQC2.SpinBox {
-            Kirigami.FormData.label: "Crítica a partir de (°C):"
+            Kirigami.FormData.label: i18n("Critical from (°C):")
             enabled: page.cfg_showTemps
             from: 30; to: 120
             value: page.cfg_tempCritical
@@ -73,33 +73,33 @@ KCM.SimpleKCM {
             }
         }
         QQC2.Label {
-            text: "Quente: a mascote sua, solta vapor e pula. Crítica: entra em alarme.\nCPU lida do hwmon (coretemp / k10temp / zenpower); GPU do nvidia-smi ou amdgpu."
+            text: i18n("Hot: the mascot sweats, steams and jumps. Critical: it goes into alarm.\nCPU read from hwmon (coretemp / k10temp / zenpower); GPU from nvidia-smi or amdgpu.")
             font: Kirigami.Theme.smallFont
             opacity: 0.7
         }
 
-        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: "Notificações" }
+        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("Notifications") }
 
         QQC2.CheckBox {
-            Kirigami.FormData.label: "Avisar quando:"
-            text: "um container cai, entra em loop ou fica unhealthy"
+            Kirigami.FormData.label: i18n("Notify when:")
+            text: i18n("a container crashes, loops or becomes unhealthy")
             checked: page.cfg_notify
             onToggled: page.cfg_notify = checked
         }
         QQC2.CheckBox {
-            text: "um container com problema volta ao normal"
+            text: i18n("a container with problems is back to normal")
             enabled: page.cfg_notify
             checked: page.cfg_notifyRecovery
             onToggled: page.cfg_notifyRecovery = checked
         }
         QQC2.CheckBox {
-            text: "o Docker sai do ar ou volta"
+            text: i18n("Docker goes down or comes back")
             enabled: page.cfg_notify
             checked: page.cfg_notifyDocker
             onToggled: page.cfg_notifyDocker = checked
         }
         QQC2.Label {
-            text: "As notificações de problema têm botões para ver os logs e reiniciar."
+            text: i18n("Problem notifications have buttons to view the logs and restart.")
             font: Kirigami.Theme.smallFont
             opacity: 0.7
         }
